@@ -1,69 +1,91 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import Link from 'next/link';
+import { useState, useRef } from 'react';
+
+export default function BirthdayApp() {
+  const [page] = useState('home');
+
+  const [tiltStyle, setTiltStyle] = useState({
+    transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+    transition: 'transform 0.5s ease-out',
+  });
+
+  const cardRef = useRef<HTMLDivElement | null>(null);
+
+  const calculateTilt = (clientX: number, clientY: number) => {
+    if (!cardRef.current) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const maxTilt = 12;
+
+    const rotateX = ((y - centerY) / centerY) * -maxTilt;
+    const rotateY = ((x - centerX) / centerX) * maxTilt;
+
+    setTiltStyle({
+      transform: `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.03, 1.03, 1.03)`,
+      transition: 'transform 0.1s ease-out',
+    });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    calculateTilt(e.clientX, e.clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.touches.length > 0) {
+      const touch = e.touches[0];
+      calculateTilt(touch.clientX, touch.clientY);
+    }
+  };
+
+  const handleReset = () => {
+    setTiltStyle({
+      transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+      transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
+    });
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <main className="min-h-[100dvh] w-full bg-[#0D0118] flex items-center justify-center p-4 sm:p-6 overflow-x-hidden relative antialiased">
+      {/* Background Glow */}
+      <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-[#ffaeda] rounded-full blur-[100px] sm:blur-[120px] opacity-10 pointer-events-none"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-[#dbb8ff] rounded-full blur-[100px] sm:blur-[120px] opacity-10 pointer-events-none"></div>
+
+      {page === 'home' && (
+        <div
+          ref={cardRef}
+          style={tiltStyle}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleReset}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleReset}
+          className="relative z-10 w-full max-w-[420px] bg-white/[0.12] backdrop-blur-2xl rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 shadow-2xl shadow-pink-500/20 text-center border border-white/20 ring-1 ring-white/10 touch-none select-none cursor-pointer"
+        >
+          <div className="text-6xl sm:text-7xl mb-5 sm:mb-6 animate-bounce drop-shadow-lg">
+            🎁
+          </div>
+
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-white via-[#ffaeda] to-white mb-3 sm:mb-4 leading-snug">
+            Ada Kejutan Buat Kamu!
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-[#d5c1c9] mb-6 sm:mb-8 font-medium leading-relaxed text-xs sm:text-sm">
+            Seseorang mengirimkan kartu ucapan spesial hari ini. Klik tombol di bawah untuk membukanya!
           </p>
+
+          <Link href="/ucapan" className="block w-full">
+            <button className="w-full bg-gradient-to-r from-[#8a486f] to-[#6f5092] hover:scale-[1.02] active:scale-[0.98] text-white font-bold py-3.5 px-6 rounded-full shadow-md transition-all duration-300 flex items-center justify-center gap-2">
+              <span className="text-xs sm:text-sm">🎉 Klik Selamat Ulang Tahun ✨</span>
+            </button>
+          </Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      )}
+    </main>
   );
 }
