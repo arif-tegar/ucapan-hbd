@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useRef } from 'react';
-await new Promise((resolve) => setTimeout(resolve, 800));
+
 
 export default function BirthdayApp() {
   const [page] = useState('home');
