@@ -19,19 +19,3 @@
   }
 }
 
-body {
-  /* Menyembunyikan elemen yang keluar dari layar */
-  overflow: hidden; 
-  /* Pastikan tinggi dan lebar body menyesuaikan layar penuh */
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-}
-
-.main-container {
-  /* Ganti 100vw menjadi 100% */
-  width: 100%; 
-  height: 100vh;
-  position: relative;
-  overflow: hidden; /* Tambahkan ini juga */
-}

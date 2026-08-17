@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useRef } from 'react';
+await new Promise((resolve) => setTimeout(resolve, 800));
 
 export default function BirthdayApp() {
   const [page] = useState('home');
@@ -53,10 +54,10 @@ export default function BirthdayApp() {
   };
 
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0D0118] flex items-center justify-center p-4 sm:p-6 overflow-x-hidden relative antialiased">
-      {/* Background Glow */}
-      <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-[#ffaeda] rounded-full blur-[100px] sm:blur-[120px] opacity-10 pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-[#dbb8ff] rounded-full blur-[100px] sm:blur-[120px] opacity-10 pointer-events-none"></div>
+    <main className="min-h-[100dvh] w-full bg-gradient-to-br from-rose-100 via-pink-50 to-orange-50 flex items-center justify-center p-4 sm:p-6 overflow-x-hidden relative antialiased">
+      {/* Background Glow Soft */}
+      <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-rose-300/40 rounded-full blur-[100px] sm:blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-amber-200/50 rounded-full blur-[100px] sm:blur-[120px] pointer-events-none"></div>
 
       {page === 'home' && (
         <div
@@ -66,22 +67,24 @@ export default function BirthdayApp() {
           onMouseLeave={handleReset}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleReset}
-          className="relative z-10 w-full max-w-[420px] bg-white/[0.12] backdrop-blur-2xl rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 shadow-2xl shadow-pink-500/20 text-center border border-white/20 ring-1 ring-white/10 touch-none select-none cursor-pointer"
+          className="relative z-10 w-full max-w-[420px] bg-white/40 backdrop-blur-2xl rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 shadow-[0_20px_50px_rgba(225,29,72,0.15)] text-center border border-white/60 ring-1 ring-white/50 touch-none select-none cursor-pointer"
         >
-          <div className="text-6xl sm:text-7xl mb-5 sm:mb-6 animate-bounce drop-shadow-lg">
+          <div className="text-6xl sm:text-7xl mb-5 sm:mb-6 animate-bounce drop-shadow-md">
             🎁
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-white via-[#ffaeda] to-white mb-3 sm:mb-4 leading-snug">
-            Ada Kejutan Buat Kamu!
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-rose-900 mb-3 sm:mb-4 leading-tight">
+            Ada Kejutan Buat <span className="text-pink-600"></span>
+            <br />
+            <span className="text-pink-600">Ibu Tutik!</span>
           </h1>
-          <p className="text-[#d5c1c9] mb-6 sm:mb-8 font-medium leading-relaxed text-xs sm:text-sm">
-            Seseorang mengirimkan kartu ucapan spesial hari ini. Klik tombol di bawah untuk membukanya!
+          <p className="text-rose-700/80 mb-6 sm:mb-8 font-medium leading-relaxed text-xs sm:text-sm">
+            Arif mengirimkan kartu ucapan spesial hari ini. Klik tombol di bawah untuk membukanya!
           </p>
 
           <Link href="/ucapan" className="block w-full">
-            <button className="w-full bg-gradient-to-r from-[#8a486f] to-[#6f5092] hover:scale-[1.02] active:scale-[0.98] text-white font-bold py-3.5 px-6 rounded-full shadow-md transition-all duration-300 flex items-center justify-center gap-2">
-              <span className="text-xs sm:text-sm">🎉 Klik Selamat Ulang Tahun ✨</span>
+            <button className="w-full bg-gradient-to-r from-rose-400 to-pink-500 hover:from-rose-500 hover:to-pink-600 active:scale-[0.98] text-white font-bold py-3.5 px-6 rounded-full shadow-md transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer">
+              <span className="text-xs sm:text-sm">🎉 Buka Kejutan Ulang Tahun ✨</span>
             </button>
           </Link>
         </div>
